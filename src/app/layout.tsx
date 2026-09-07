@@ -11,7 +11,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className="antialiased">
       <ClerkProvider>
-        <body className="min-h-full flex flex-col">{children}</body>
+        <body className="min-h-full flex flex-col justify-between">
+          {children}
+        </body>
       </ClerkProvider>
     </html>
   );
