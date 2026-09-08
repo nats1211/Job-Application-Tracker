@@ -1,9 +1,8 @@
-import Link from "next/link";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
-export default function LandingPage() {
-  return (
-    <main className="min-h-screen flex flex-col justify-center items-center">
-      <Link href="./sign-in">Sign In</Link>
-    </main>
-  );
+export default async function RootPage() {
+  await auth.protect();
+
+  redirect("/dashboard");
 }

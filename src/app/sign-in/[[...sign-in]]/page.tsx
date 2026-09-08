@@ -2,9 +2,8 @@ import { SignIn } from "@clerk/nextjs";
 
 export default function SignInPage() {
   return (
-    <>
+    <main>
       <SignIn
-        fallbackRedirectUrl="/dashboard"
         appearance={{
           variables: {
             colorPrimary: "#4F46E5",
@@ -25,6 +24,6 @@ export default function SignInPage() {
           },
         }}
       />
-    </>
+    </main>
   );
 }

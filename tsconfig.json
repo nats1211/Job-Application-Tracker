@@ -20,7 +20,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/drizzle/*"]
+      "@/*": ["./src/drizzle/*"],
+      "Types/*": ["./src/types/*"],
+      "Utils/*": ["./src/utils/*"],
+      "Components/*": ["./src/components/*"]
     }
   },
   "include": [

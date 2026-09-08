@@ -1,15 +1,12 @@
-import { Show, SignOutButton } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
+import { SignOutButton } from "@clerk/nextjs";
 
-export default async function DashboardPage() {
-  await auth.protect();
-
+export default function DashboardPage() {
   return (
-    <Show when="signed-in">
-      <div className="min-h-screen flex flex-col justify-center items-center">
-        <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
-        <SignOutButton>Log Out</SignOutButton>
-      </div>
-    </Show>
+    <>
+      <h1 className="text-3xl font-bold mb-4">Dashboard</h1>
+      <SignOutButton>
+        <button>Log Out</button>
+      </SignOutButton>
+    </>
   );
 }

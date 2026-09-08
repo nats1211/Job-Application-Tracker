@@ -42,7 +42,13 @@ export async function POST(req: NextRequest) {
       }
       case "user.deleted": {
         if (evt.data.id != null) {
-          await deleteUser({ clerkId: evt.data.id });
+          const deletedUser = await deleteUser({ clerkId: evt.data.id });
+
+          if (deletedUser == null) {
+            console.warn(
+              `User ${evt.data.id} was already deleted or not found`,
+            );
+          }
         }
         break;
       }

@@ -26,6 +26,7 @@ export const ApplicationsTable = pgTable("applications", {
     .notNull()
     .references(() => UsersTable.id, { onDelete: "cascade" }),
   company: varchar("company", { length: 255 }).notNull(),
+  role: varchar("role", { length: 255 }),
   status: applicationStatusEnum("status").notNull().default("wishlist"),
   jobPostingUrl: text("job_posting_url"),
   location: varchar("location", { length: 255 }),
