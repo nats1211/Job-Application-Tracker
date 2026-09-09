@@ -1,5 +1,6 @@
 import { db } from "@/db";
 import { ApplicationsTable } from "@/schema";
+import { UpdateApplicationInput } from "@/types/application";
 import { and, eq } from "drizzle-orm";
 
 export async function insertApplications(
@@ -21,7 +22,7 @@ export async function insertApplications(
 
 export async function editApplications(
   { applicationId, userId }: { applicationId: string; userId: string },
-  data: Partial<typeof ApplicationsTable.$inferInsert>,
+  data: UpdateApplicationInput,
 ) {
   const [updatedApplication] = await db
     .update(ApplicationsTable)

@@ -23,3 +23,10 @@ export type NewApplicationInput = Omit<
   typeof ApplicationsTable.$inferInsert,
   "id" | "userId" | "createdAt" | "updatedAt"
 >;
+
+export type UpdateApplicationInput = Partial<
+  Omit<
+    typeof ApplicationsTable.$inferInsert,
+    "id" | "userId" | "createdAt" | "updatedAt"
+  >
+>;
