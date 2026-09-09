@@ -21,9 +21,11 @@
     ],
     "paths": {
       "@/*": ["./src/drizzle/*"],
-      "Types/*": ["./src/types/*"],
-      "Utils/*": ["./src/utils/*"],
-      "Components/*": ["./src/components/*"]
+      "@/types/*": ["./src/types/*"],
+      "Components/*": ["./src/components/*"],
+      "@/features/*": ["./src/features/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/services/*": ["./src/services/*"]
     }
   },
   "include": [

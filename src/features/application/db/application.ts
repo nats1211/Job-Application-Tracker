@@ -11,10 +11,6 @@ export async function insertApplications(
   const [NewApplication] = await db
     .insert(ApplicationsTable)
     .values(data)
-    .onConflictDoUpdate({
-      target: [ApplicationsTable.id],
-      set: { ...data, updatedAt: new Date() },
-    })
     .returning();
 
   if (NewApplication == null)
@@ -45,16 +41,43 @@ export async function editApplications(
 
 export async function deleteApplications({
   applicationId,
+  userId,
 }: {
   applicationId: string;
+  userId: string;
 }) {
   const [deletedApplications] = await db
     .delete(ApplicationsTable)
-    .where(eq(ApplicationsTable.id, applicationId))
+    .where(
+      and(
+        eq(ApplicationsTable.id, applicationId),
+        eq(ApplicationsTable.userId, userId),
+      ),
+    )
     .returning();
 
   if (deletedApplications == null)
     throw new Error("Failed to delete Appliation");
 
   return deletedApplications;
+}
+
+export async function selectApplications({
+  userId,
+  status,
+}: {
+  userId: string;
+  status?: (typeof ApplicationsTable.$inferSelect)["status"];
+}) {
+  return db
+    .select()
+    .from(ApplicationsTable)
+    .where(
+      status
+        ? and(
+            eq(ApplicationsTable.userId, userId),
+            eq(ApplicationsTable.status, status),
+          )
+        : eq(ApplicationsTable.userId, userId),
+    );
 }

@@ -48,3 +48,17 @@ export async function deleteUser({ clerkId }: { clerkId: string }) {
 
   return deletedUser;
 }
+
+export async function getUserByClerkId(clerkId: string) {
+  const [user] = await db
+    .select()
+    .from(UsersTable)
+    .where(eq(UsersTable.clerkId, clerkId));
+
+  if (user == null)
+    throw new Error(
+      "User not found -- has the Clerk Webhook synced this user yet?",
+    );
+
+  return user;
+}

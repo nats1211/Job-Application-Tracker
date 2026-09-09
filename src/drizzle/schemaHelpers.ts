@@ -8,6 +8,6 @@ export const updatedAt = timestamp("updated_at", { withTimezone: true })
   .notNull()
   .defaultNow()
   .$onUpdate(() => new Date());
-export const expiresAt = timestamp("created_at", {
+export const expiresAt = timestamp("expires_at", {
   withTimezone: true,
 }).notNull();

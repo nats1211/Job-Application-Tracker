@@ -1,4 +1,4 @@
-import { insertApplications } from "../features/application/db/applications";
+import { insertApplications } from "../features/application/db/application";
 
 async function main() {
   try {
