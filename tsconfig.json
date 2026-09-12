@@ -22,7 +22,7 @@
     "paths": {
       "@/*": ["./src/drizzle/*"],
       "@/types/*": ["./src/types/*"],
-      "Components/*": ["./src/components/*"],
+      "@/components/*": ["./src/app/shared-components/ui/ui/*"],
       "@/features/*": ["./src/features/*"],
       "@/hooks/*": ["./src/hooks/*"],
       "@/services/*": ["./src/services/*"]
