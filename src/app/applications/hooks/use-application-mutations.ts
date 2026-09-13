@@ -5,7 +5,7 @@ import {
   editApplicationsAction,
   insertApplicationsAction,
 } from "@/features/application/actions/application";
-import { Application, NewApplicationInput } from "@/types/application";
+import { Application, CreateApplicationInput } from "@/types/application";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { applicationKeys } from "../lib/query-keys";
 import { toast } from "@/components/ui/toast";
@@ -14,7 +14,8 @@ export function useCreateApplication() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (input: NewApplicationInput) => insertApplicationsAction(input),
+    mutationFn: (input: CreateApplicationInput) =>
+      insertApplicationsAction(input),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.lists() });
       toast.add({

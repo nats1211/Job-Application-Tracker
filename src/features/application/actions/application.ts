@@ -1,6 +1,6 @@
 "use server";
 
-import { Application, NewApplicationInput } from "@/types/application";
+import { Application, CreateApplicationInput } from "@/types/application";
 import {
   editApplications,
   insertApplications,
@@ -8,15 +8,26 @@ import {
   selectApplications,
 } from "../db/application";
 import { getAuthenticatedUser } from "@/features/users/lib/get-authenticated-user";
+import { createApplicationInputSchema } from "../validation/application";
 
-export async function insertApplicationsAction(input: NewApplicationInput) {
+const updateApplicationInputSchema = createApplicationInputSchema.partial();
+
+export async function insertApplicationsAction(input: CreateApplicationInput) {
   const user = await getAuthenticatedUser();
-  return insertApplications({ ...input, userId: user.id });
+  const validatedInput = createApplicationInputSchema.parse(input);
+
+  return insertApplications({ ...validatedInput, userId: user.id });
 }
 
 export async function editApplicationsAction(app: Application) {
   const user = await getAuthenticatedUser();
-  return editApplications({ applicationId: app.id, userId: user.id }, app);
+  const { id, ...input } = app;
+  const validatedInput = updateApplicationInputSchema.parse(input);
+
+  return editApplications(
+    { applicationId: id, userId: user.id },
+    validatedInput,
+  );
 }
 
 export async function deleteApplicationsAction(applicationId: string) {

@@ -1,25 +1,12 @@
-import { ApplicationsTable } from "@/schema";
+import { applicationStatusEnum, ApplicationsTable } from "@/schema";
 
-export type Status =
-  | "wishlist"
-  | "applied"
-  | "interviewing"
-  | "offer"
-  | "rejected"
-  | "accepted";
+export const ALL_STATUSES = applicationStatusEnum.enumValues;
 
-export const ALL_STATUSES: Status[] = [
-  "wishlist",
-  "applied",
-  "interviewing",
-  "offer",
-  "rejected",
-  "accepted",
-];
+export type Status = (typeof ALL_STATUSES)[number];
 
 export type Application = typeof ApplicationsTable.$inferSelect;
 
-export type NewApplicationInput = Omit<
+export type CreateApplicationInput = Omit<
   typeof ApplicationsTable.$inferInsert,
   "id" | "userId" | "createdAt" | "updatedAt"
 >;
