@@ -1,8 +1,12 @@
+"use client";
+
 import { Application } from "@/types/application";
 import { useMemo, useState } from "react";
 import { useApplicationQuery } from "./hooks/use-applications-query";
 import { ApplicationToolbar } from "./components/application-toolbar";
 import { ApplicationList } from "./components/application-list";
+import { ApplicationFormDialog } from "./components/application-form-dialog";
+import { DeleteApplicationDialog } from "./components/delete-application-dialog";
 
 export function ApplicationsClient() {
   const [search, setSearch] = useState<string>("");
@@ -63,6 +67,18 @@ export function ApplicationsClient() {
         hasSearch={search.trim().length > 0}
         onEdit={handleEdit}
         onDelete={handleDelete}
+      />
+
+      <ApplicationFormDialog
+        open={formOpen}
+        onOpenChange={setFormOpen}
+        application={selectedApplication}
+      />
+
+      <DeleteApplicationDialog
+        open={deleteOpen}
+        onOpenChange={setDeleteOpen}
+        application={selectedApplication}
       />
     </div>
   );

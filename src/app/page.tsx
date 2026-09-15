@@ -4,5 +4,5 @@ import { redirect } from "next/navigation";
 export default async function RootPage() {
   await auth.protect();
 
-  redirect("/dashboard");
+  redirect("/applications");
 }
