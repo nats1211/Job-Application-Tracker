@@ -28,5 +28,5 @@ export const defaultApplicationFormValues: ApplicationFormInput = {
   location: "",
   salary: 0,
   notes: "",
-  appliedAt: new Date(),
+  appliedAt: "",
 };

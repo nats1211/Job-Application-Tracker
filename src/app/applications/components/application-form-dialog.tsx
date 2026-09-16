@@ -59,7 +59,7 @@ export function ApplicationFormDialog({
         location: application.location ?? "",
         salary: application.salary ?? 0,
         notes: application.notes ?? "",
-        appliedAt: application.appliedAt ?? undefined,
+        appliedAt: application.appliedAt ?? "",
       });
     } else {
       form.reset(defaultApplicationFormValues);

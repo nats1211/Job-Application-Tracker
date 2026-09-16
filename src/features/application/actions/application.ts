@@ -1,6 +1,10 @@
 "use server";
 
-import { Application, CreateApplicationInput } from "@/types/application";
+import {
+  Application,
+  CreateApplicationInput,
+  Status,
+} from "@/types/application";
 import {
   editApplications,
   insertApplications,
@@ -35,7 +39,7 @@ export async function deleteApplicationsAction(applicationId: string) {
   return deleteApplications({ applicationId, userId: user.id });
 }
 
-export async function getApplicationsAction() {
+export async function getApplicationsAction(params?: { status?: Status }) {
   const user = await getAuthenticatedUser();
-  return selectApplications({ userId: user.id });
+  return selectApplications({ userId: user.id, status: params?.status });
 }

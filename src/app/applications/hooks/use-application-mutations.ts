@@ -49,6 +49,12 @@ export function useEditApplication() {
 
       return { previous };
     },
+    onSuccess: () => {
+      toast.add({
+        type: "success",
+        description: "Changes have been applied.",
+      });
+    },
     onError: (_err, _updated, context) => {
       if (context?.previous) {
         queryClient.setQueryData(applicationKeys.lists(), context.previous);
@@ -60,10 +66,6 @@ export function useEditApplication() {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: applicationKeys.lists() });
-      toast.add({
-        type: "success",
-        description: "Changes has been applied.",
-      });
     },
   });
 }
@@ -76,20 +78,28 @@ export function useDeleteApplication() {
       deleteApplicationsAction(applicationId),
     onMutate: async (applicationId) => {
       await queryClient.cancelQueries({ queryKey: applicationKeys.lists() });
-      const previous = queryClient.getQueryData<Application[]>(
-        applicationKeys.lists(),
-      );
 
-      queryClient.setQueryData<Application[]>(applicationKeys.lists(), (prev) =>
-        prev?.filter((a) => a.id !== applicationId),
+      const previous = queryClient.getQueriesData<Application[]>({
+        queryKey: applicationKeys.lists(),
+      });
+
+      queryClient.setQueriesData<Application[]>(
+        { queryKey: applicationKeys.lists() },
+        (prev) => prev?.filter((a) => a.id !== applicationId),
       );
 
       return { previous };
     },
+    onSuccess: () => {
+      toast.add({
+        type: "success",
+        description: "Changes have been applied.",
+      });
+    },
     onError: (_err, _id, context) => {
-      if (context?.previous) {
-        queryClient.setQueryData(applicationKeys.lists(), context.previous);
-      }
+      context?.previous?.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
       toast.add({
         type: "error",
         description: "Failed to delete this application.",
@@ -99,7 +109,7 @@ export function useDeleteApplication() {
       queryClient.invalidateQueries({ queryKey: applicationKeys.lists() });
       toast.add({
         type: "success",
-        description: "Application has been deleted sucessfully.",
+        description: "Application has been deleted successfully.",
       });
     },
   });

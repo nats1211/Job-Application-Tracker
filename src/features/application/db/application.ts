@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { ApplicationsTable } from "@/schema";
 import { UpdateApplicationInput } from "@/types/application";
-import { and, eq } from "drizzle-orm";
+import { and, desc, eq } from "drizzle-orm";
 
 export async function insertApplications(
   data: Omit<
@@ -80,5 +80,7 @@ export async function selectApplications({
             eq(ApplicationsTable.status, status),
           )
         : eq(ApplicationsTable.userId, userId),
-    );
+    )
+    .orderBy(desc(ApplicationsTable.createdAt))
+    .limit(50);
 }
