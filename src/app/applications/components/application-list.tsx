@@ -11,12 +11,19 @@ import {
 } from "@/components/table";
 import { Application } from "@/types/application";
 import {
-  Badge,
+  BriefcaseBusiness,
+  CheckCircle2,
   ExternalLink,
+  Eye,
+  Gift,
+  MessageSquare,
   MoreHorizontal,
   Pencil,
+  Send,
   Trash2,
+  XCircle,
 } from "lucide-react";
+import { Badge } from "@/components/badge";
 import { STATUS_STYLES } from "../../shared-components/lib/status-styles";
 import {
   DropdownMenu,
@@ -32,6 +39,7 @@ interface ApplicationListProps {
   isError: boolean;
   error: unknown;
   hasSearch: boolean;
+  onAdd: () => void;
   onEdit: (application: Application) => void;
   onDelete: (application: Application) => void;
 }
@@ -42,6 +50,7 @@ export function ApplicationList({
   isError,
   error,
   hasSearch,
+  onAdd,
   onEdit,
   onDelete,
 }: ApplicationListProps) {
@@ -66,36 +75,48 @@ export function ApplicationList({
 
   if (!applications || applications.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-md border border-dashed py-16 text-center">
+      <div className="flex min-h-56 flex-col items-center justify-center text-center">
+        <BriefcaseBusiness className="mb-3 h-8 w-8 text-muted-foreground" />
         <p className="text-sm font-medium">
           {hasSearch ? "No matching applications" : "No applications yet"}
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-muted-foreground">
           {hasSearch
             ? "Try a different search term."
             : "Add your first application to start tracking it here."}
         </p>
+        {!hasSearch && (
+          <Button onClick={onAdd} size="sm" className="mt-4">
+            Add application
+          </Button>
+        )}
       </div>
     );
   }
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Company</TableHead>
-            <TableHead>Position</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Applied</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead className="w-15" />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {applications.map((application) => (
-            <TableRow key={application.id}>
-              <TableCell className="font-medium">
+    <Table>
+      <TableHeader>
+        <TableRow className="bg-muted/50 hover:bg-muted/50">
+          <TableHead className="px-4 py-3">Company</TableHead>
+          <TableHead className="px-4 py-3">Position</TableHead>
+          <TableHead className="px-4 py-3">Status</TableHead>
+          <TableHead className="px-4 py-3">Applied</TableHead>
+          <TableHead className="px-4 py-3">Location</TableHead>
+          <TableHead className="w-15 px-4 py-3" />
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {applications.map((application) => {
+          const status = STATUS_CONFIG[application.status];
+          const StatusIcon = status.icon;
+
+          return (
+            <TableRow
+              key={application.id}
+              className="h-16 hover:bg-muted/30"
+            >
+              <TableCell className="px-4 py-3 font-medium">
                 {application.jobPostingUrl ? (
                   <a
                     href={application.jobPostingUrl}
@@ -104,28 +125,31 @@ export function ApplicationList({
                     className="inline-flex items-center gap-1 hover:underline"
                   >
                     {application.company}
-                    <ExternalLink className="h-3 w-3 text-muted-foreground" />
+                    <ExternalLink className="h-3.5 w-3.5 text-muted-foreground" />
                   </a>
                 ) : (
                   application.company
                 )}
               </TableCell>
-              <TableCell>{application.role}</TableCell>
-              <TableCell>
+              <TableCell className="px-4 py-3">{application.role}</TableCell>
+              <TableCell className="px-4 py-3">
                 <Badge
                   className={STATUS_STYLES[application.status]}
-                  fontVariant="secondary"
+                  variant="outline"
                 >
-                  {application.status}
+                  <StatusIcon />
+                  {status.label}
                 </Badge>
               </TableCell>
-              <TableCell>
+              <TableCell className="px-4 py-3">
                 {application.appliedAt
                   ? new Date(application.appliedAt).toLocaleDateString()
                   : "-"}
               </TableCell>
-              <TableCell>{application.location ?? "-"}</TableCell>
-              <TableCell>
+              <TableCell className="px-4 py-3">
+                {application.location ?? "-"}
+              </TableCell>
+              <TableCell className="px-4 py-3">
                 <DropdownMenu>
                   <DropdownMenuTrigger
                     render={
@@ -135,21 +159,48 @@ export function ApplicationList({
                     <MoreHorizontal className="h-4 w-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
+                    <DropdownMenuItem
+                      disabled={!application.jobPostingUrl}
+                      onClick={() => {
+                        if (application.jobPostingUrl) {
+                          window.open(
+                            application.jobPostingUrl,
+                            "_blank",
+                            "noopener,noreferrer",
+                          );
+                        }
+                      }}
+                    >
+                      <Eye />
+                      View
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={() => onEdit(application)}>
-                      <Pencil className="mr-2 h-4 w-4" />
+                      <Pencil />
                       Edit
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => onDelete(application)}>
-                      <Trash2 className="mr-2 h-4 w-4" />
+                    <DropdownMenuItem
+                      variant="destructive"
+                      onClick={() => onDelete(application)}
+                    >
+                      <Trash2 />
                       Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+          );
+        })}
+      </TableBody>
+    </Table>
   );
 }
+
+const STATUS_CONFIG = {
+  wishlist: { label: "Wishlist", icon: BriefcaseBusiness },
+  applied: { label: "In Review", icon: Send },
+  interviewing: { label: "Interview", icon: MessageSquare },
+  offer: { label: "Offer", icon: Gift },
+  rejected: { label: "Rejected", icon: XCircle },
+  accepted: { label: "Accepted", icon: CheckCircle2 },
+} as const;

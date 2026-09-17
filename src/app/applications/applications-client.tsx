@@ -7,6 +7,7 @@ import { ApplicationToolbar } from "./components/application-toolbar";
 import { ApplicationList } from "./components/application-list";
 import { ApplicationFormDialog } from "./components/application-form-dialog";
 import { DeleteApplicationDialog } from "./components/delete-application-dialog";
+import { Card, CardContent, CardHeader } from "@/components/card";
 
 export function ApplicationsClient() {
   const [search, setSearch] = useState<string>("");
@@ -52,22 +53,28 @@ export function ApplicationsClient() {
   };
 
   return (
-    <div className="space-y-4">
-      <ApplicationToolbar
-        search={""}
-        onSearchChange={setSearch}
-        onAddClick={handleAdd}
-      />
-
-      <ApplicationList
-        applications={filteredApplications}
-        isLoading={isLoading}
-        isError={isError}
-        error={error}
-        hasSearch={search.trim().length > 0}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+    <div>
+      <Card className="gap-0">
+        <CardHeader className="flex grid-rows-none flex-row items-center justify-between gap-4">
+          <ApplicationToolbar
+            search={search}
+            onSearchChange={setSearch}
+            onAddClick={handleAdd}
+          />
+        </CardHeader>
+        <CardContent className="pt-0">
+          <ApplicationList
+            applications={filteredApplications}
+            isLoading={isLoading}
+            isError={isError}
+            error={error}
+            hasSearch={search.trim().length > 0}
+            onAdd={handleAdd}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        </CardContent>
+      </Card>
 
       <ApplicationFormDialog
         open={formOpen}

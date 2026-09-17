@@ -16,7 +16,7 @@ export function ApplicationToolbar({
   onAddClick,
 }: ApplicationToolbarProps) {
   return (
-    <div className="flex items-center justify-between gap-4">
+    <div className="flex w-full items-center justify-between gap-4">
       <div className="relative w-full max-w-sm">
         <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
         <Input
@@ -26,7 +26,7 @@ export function ApplicationToolbar({
           className="pl-8"
         />
       </div>
-      <Button onClick={onAddClick}>
+      <Button onClick={onAddClick} className="shrink-0">
         <Plus className="mr-2 h-4 w-4" /> New Application
       </Button>
     </div>
