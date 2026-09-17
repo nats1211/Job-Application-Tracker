@@ -36,7 +36,9 @@ export function SelectWrapper({
   return (
     <Select
       value={value}
-      onValueChange={() => onValueChange}
+      onValueChange={(value) => {
+        if (value !== null) onValueChange?.(value);
+      }}
       disabled={disabled}
     >
       <SelectTrigger id={id} className={cn("w-full", className)}>

@@ -54,7 +54,7 @@ export function ApplicationsClient() {
 
   return (
     <div>
-      <Card className="gap-0">
+      <Card className="gap-4">
         <CardHeader className="flex grid-rows-none flex-row items-center justify-between gap-4">
           <ApplicationToolbar
             search={search}
