@@ -59,7 +59,9 @@ export function ApplicationFormDialog({
         location: application.location ?? "",
         salary: application.salary ?? 0,
         notes: application.notes ?? "",
-        appliedAt: application.appliedAt ?? "",
+        appliedAt: application.appliedAt
+          ? application.appliedAt.toISOString().split("T")[0]
+          : "",
       });
     } else {
       form.reset(defaultApplicationFormValues);
@@ -72,7 +74,7 @@ export function ApplicationFormDialog({
       location: values.location || null,
       salary: values.salary ?? 0,
       notes: values.notes || null,
-      appliedAt: values.appliedAt ? new Date(values.appliedAt) : null,
+      appliedAt: values.appliedAt ?? null,
     };
 
     if (isEditing && application) {
